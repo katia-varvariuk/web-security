@@ -7,6 +7,13 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * @author katia
+ * @project web-security
+ * @class ItemService
+ * @version 1.0.0
+ * @since 27/09/2026
+ */
 @Service
 public class ItemService {
 
