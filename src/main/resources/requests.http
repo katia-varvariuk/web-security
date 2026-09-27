@@ -1,0 +1,28 @@
+### 1. Get all items
+GET http://localhost:8080/api/v1/items
+
+### 2. Get item by id
+GET http://localhost:8080/api/v1/items/1
+
+### 3. Create item
+POST http://localhost:8080/api/v1/items
+Content-Type: application/json
+
+{
+  "id": "4",
+  "name": "name4",
+  "description": "description4"
+}
+
+### 4. Update item
+PUT http://localhost:8080/api/v1/items
+Content-Type: application/json
+
+{
+  "id": "1",
+  "name": "name1_updated",
+  "description": "description new"
+}
+
+### 5. Delete item
+DELETE http://localhost:8080/api/v1/items/4
