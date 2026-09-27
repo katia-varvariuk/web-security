@@ -1,28 +1,68 @@
-### 1. Get all items
+
+### 5 ЗАПИТІВ БЕЗ АВТОРИЗАЦІЇ (Очікується 401 Unauthorized)
+
+### 1. GET ALL (No Auth)
 GET http://localhost:8080/api/v1/items
 
-### 2. Get item by id
+### 2. GET ONE (No Auth)
 GET http://localhost:8080/api/v1/items/1
 
-### 3. Create item
+### 3. POST (No Auth)
 POST http://localhost:8080/api/v1/items
 Content-Type: application/json
 
 {
-  "id": "4",
-  "name": "name4",
-  "description": "description4"
+  "id": "5",
+  "name": "name5",
+  "description": "description5"
 }
 
-### 4. Update item
+### 4. PUT (No Auth)
 PUT http://localhost:8080/api/v1/items
 Content-Type: application/json
 
 {
   "id": "1",
-  "name": "name1_updated",
-  "description": "description new"
+  "name": "name1_edit",
+  "description": "desc_edit"
 }
 
-### 5. Delete item
-DELETE http://localhost:8080/api/v1/items/4
+### 5. DELETE (No Auth)
+DELETE http://localhost:8080/api/v1/items/1
+
+
+### 5 ЗАПИТІВ З BASIC AUTH (Очікується 200 OK)
+
+### 6. GET ALL (Authorized)
+GET http://localhost:8080/api/v1/items
+Authorization: Basic YWRtaW46YWRtaW4xMjM=
+
+### 7. GET ONE (Authorized)
+GET http://localhost:8080/api/v1/items/1
+Authorization: Basic YWRtaW46YWRtaW4xMjM=
+
+### 8. POST (Authorized)
+POST http://localhost:8080/api/v1/items
+Authorization: Basic YWRtaW46YWRtaW4xMjM=
+Content-Type: application/json
+
+{
+  "id": "10",
+  "name": "name10",
+  "description": "description10"
+}
+
+### 9. PUT (Authorized)
+PUT http://localhost:8080/api/v1/items
+Authorization: Basic YWRtaW46YWRtaW4xMjM=
+Content-Type: application/json
+
+{
+  "id": "2",
+  "name": "name2_updated",
+  "description": "description2_updated"
+}
+
+### 10. DELETE (Authorized)
+DELETE http://localhost:8080/api/v1/items/3
+Authorization: Basic YWRtaW46YWRtaW4xMjM=
