@@ -45,4 +45,24 @@ public class ItemRestController {
     public void delete(@PathVariable String id) {
         itemService.deleteItem(id);
     }
+
+    @GetMapping("/hello/admin")
+    public String helloAdmin() {
+        return "Hello Admin!";
+    }
+
+    @GetMapping("/hello/unknown")
+    public String helloUnknown() {
+        return "Hello Unknown!";
+    }
+
+    @GetMapping("/hello/user")
+    public String helloUser() {
+        return "Hello User!";
+    }
+
+    @GetMapping("/hello/man")
+    public String helloMan() {
+        return "Hello, man!";
+    }
 }

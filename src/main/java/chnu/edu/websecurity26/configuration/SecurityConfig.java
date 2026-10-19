@@ -31,6 +31,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/index.html").permitAll()
+                        .requestMatchers("/api/v1/items/hello/admin").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/items/hello/user").hasRole("USER")
+                        .requestMatchers("/api/v1/items/hello/man").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/v1/items/hello/unknown").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());
@@ -44,14 +48,25 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
+    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails admin = User.builder()
-                .passwordEncoder(passwordEncoder()::encode)
                 .username("admin")
-                .password("admin123")
+                .password(passwordEncoder.encode("admin"))
                 .roles("ADMIN")
                 .build();
 
-        return new InMemoryUserDetailsManager(admin);
+        UserDetails user = User.builder()
+                .username("user")
+                .password(passwordEncoder.encode("user"))
+                .roles("USER")
+                .build();
+
+        UserDetails superadmin = User.builder()
+                .username("superadmin")
+                .password(passwordEncoder.encode("superadmin"))
+                .roles("SUPERADMIN", "ADMIN")
+                .build();
+
+        return new InMemoryUserDetailsManager(admin, user, superadmin);
     }
 }

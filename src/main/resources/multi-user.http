@@ -1,0 +1,38 @@
+### 1. Admin accessing admin route (Expected: 200 OK)
+GET http://localhost:8080/api/v1/items/hello/admin
+Authorization: Basic YWRtaW46YWRtaW4=
+
+### 2. User trying to access admin route (Expected: 403 Forbidden)
+GET http://localhost:8080/api/v1/items/hello/admin
+Authorization: Basic dXNlcjp1c2Vy
+
+### 3. User accessing user route (Expected: 200 OK)
+GET http://localhost:8080/api/v1/items/hello/user
+Authorization: Basic dXNlcjp1c2Vy
+
+### 4. Admin trying to access user route (Expected: 403 Forbidden - якщо обмежено лише роллю USER)
+GET http://localhost:8080/api/v1/items/hello/user
+Authorization: Basic YWRtaW46YWRtaW4=
+
+### 5. Man route accessed by User (Expected: 200 OK)
+GET http://localhost:8080/api/v1/items/hello/man
+Authorization: Basic dXNlcjp1c2Vy
+
+### 6. Man route accessed by Admin (Expected: 200 OK)
+GET http://localhost:8080/api/v1/items/hello/man
+Authorization: Basic YWRtaW46YWRtaW4=
+
+### 7. Unknown route without auth (Expected: 200 OK - permitAll)
+GET http://localhost:8080/api/v1/items/hello/unknown
+
+### 8. Superadmin accessing admin route (Expected: 200 OK)
+GET http://localhost:8080/api/v1/items/hello/admin
+Authorization: Basic c3VwZXJhZG1pbjpzdXBlcmFkbWlu
+
+### 9. Superadmin accessing user route (Expected: залежно від налаштувань)
+GET http://localhost:8080/api/v1/items/hello/user
+Authorization: Basic c3VwZXJhZG1pbjpzdXBlcmFkbWlu
+
+### 10. Unknown route with user auth (Expected: 200 OK)
+GET http://localhost:8080/api/v1/items/hello/unknown
+Authorization: Basic dXNlcjp1c2Vy
