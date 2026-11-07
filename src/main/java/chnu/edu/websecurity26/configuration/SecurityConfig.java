@@ -1,7 +1,11 @@
 package chnu.edu.websecurity26.configuration;
 
+import org.springframework.aop.Advisor;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Role;
+import org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,25 +30,28 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
+    public static PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    // НОВЕ: Бін для перехоплення анотацій @PreAuthorize
+    @Bean
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    public static Advisor preAuthorizeMethodInterceptor() {
+        return AuthorizationManagerBeforeMethodInterceptor.preAuthorize();
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index.html").permitAll()
-                        .requestMatchers("/api/v1/items/hello/admin").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/items/hello/user").hasRole("USER")
-                        .requestMatchers("/api/v1/items/hello/man").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/api/v1/items/hello/unknown").permitAll()
+                        .requestMatchers("/", "/index.html", "/api/v1/items/hello/unknown").permitAll() // Додали сюди
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean
