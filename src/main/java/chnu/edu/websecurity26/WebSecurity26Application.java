@@ -17,19 +17,25 @@ public class WebSecurity26Application {
     }
 
     @Bean
-    CommandLineRunner initDatabase(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    CommandLineRunner initDatabase(UserRepository repo, PasswordEncoder encoder) {
         return args -> {
-            if (userRepository.findByEmail("john@mail.com").isEmpty()) {
-                User user = User.builder()
-                        .firstName("John")
-                        .lastName("Lennon")
-                        .email("john@mail.com")
-                        .password(passwordEncoder.encode("password"))
-                        .role(Role.USER)
-                        .build();
-                userRepository.save(user);
-                System.out.println(">>> Тестовий користувач john@mail.com створений у базі! <<<");
-            }
+            createIfMissing(repo, encoder, "John", "Lennon", "john@mail.com", Role.USER);
+            createIfMissing(repo, encoder, "Anna", "Adminova", "anna@mail.com", Role.ADMIN);
+            createIfMissing(repo, encoder, "Peter", "Super", "peter@mail.com", Role.SUPERADMIN);
         };
+    }
+
+    private void createIfMissing(UserRepository repo, PasswordEncoder encoder,
+                                 String first, String last, String email, Role role) {
+        if (repo.findByEmail(email).isEmpty()) {
+            repo.save(User.builder()
+                    .firstName(first)
+                    .lastName(last)
+                    .email(email)
+                    .password(encoder.encode("password"))
+                    .role(role)
+                    .build());
+            System.out.println(">>> Створено користувача " + email + " (" + role + ") <<<");
+        }
     }
 }

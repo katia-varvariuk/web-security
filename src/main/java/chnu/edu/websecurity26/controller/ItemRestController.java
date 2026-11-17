@@ -48,7 +48,7 @@ public class ItemRestController {
     }
 
     @GetMapping("/hello/admin")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String helloAdmin() {
         return "Hello Admin!";
     }
@@ -60,13 +60,13 @@ public class ItemRestController {
     }
 
     @GetMapping("/hello/user")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     public String helloUser() {
         return "Hello User!";
     }
 
     @GetMapping("/hello/man")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'SUPERADMIN')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SUPERADMIN')")
     public String helloMan() {
         return "Hello, man!";
     }
